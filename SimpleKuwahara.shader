@@ -1,12 +1,9 @@
-Shader "Unlit/GeneralizedKuwaharaFilter"
+Shader "Unlit/KuwaharaFilter"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Radius ("Filter Size", Range(1, 25)) = 5
-        _Sectors ("Sectors", Int) = 8
-        _SamplesPerSector ("Samples Per Sector", Int) = 6
-        _Q ("Q", Float) = 8.0
+        _Size ("Filter Size", Range(1, 25)) = 5
     }
 
     SubShader
@@ -45,10 +42,7 @@ Shader "Unlit/GeneralizedKuwaharaFilter"
                 float4 vertex : SV_POSITION;
             };
 
-            int _Radius;
-            int _Sectors;
-            int _SamplesPerSector;
-            float _Q;
+            float _Size;
             float4 _BlitTexture_TexelSize;
 
             FilterVaryings vert(FilterAttributes v)
@@ -75,7 +69,7 @@ Shader "Unlit/GeneralizedKuwaharaFilter"
             
                 // 4エリアの正方形の1辺の長さを求める
                 // 点Aから右上、右下、左上、左下の4区画を調べる処理を行うためにその区画の大きさを決める
-                int areaSize = floor(_Radius * 0.5);
+                int areaSize = floor(_Size * 0.5);
 
                 // 長さが0なら何もしない
                 if(areaSize == 0)
